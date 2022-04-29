@@ -17,11 +17,11 @@ class MainActivityViewModel() : ViewModel() {
 
     fun getAllPosts(){
         viewModelScope.launch {
-            _posts.postValue(Resource.loading(null))
+            _posts.postValue(Resource.loading())
             try {
                 _posts.postValue(Resource.success(repository.getPosts()))
             }catch (exception: Exception){
-                _posts.postValue(Resource.error(null, exception.message ?: "Error Occurred"))
+                _posts.postValue(Resource.error(exception.message ?: "Error Occurred"))
             }
         }
     }
