@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainActivityViewModel by viewModel()
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         progressDialog = ProgressDialog(this)
+        adapter = MainAdapter()
+        binding.rvPost.adapter = adapter
 
         binding.btnGetAllPosts.setOnClickListener {
             viewModel.getAllPosts()
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                     progressDialog.show()
                 }
                 Status.SUCCESS -> {
+                    adapter.submitList(resource.data)
                     Toast.makeText(
                         this,
                         "Response Sukses : ${resource.data?.get(0)?.title}",

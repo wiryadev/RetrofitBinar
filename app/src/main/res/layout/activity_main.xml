@@ -10,7 +10,21 @@
     <Button
         android:id="@+id/btn_get_all_posts"
         android:layout_width="match_parent"
-        android:text="Get All Car"
+        android:text="@string/get_all_car"
+        android:backgroundTint="@color/purple_616"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_post"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Retrofit</string>
+    <string name="get_all_car">Get Main Car</string>
 </resources>
