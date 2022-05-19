@@ -1,28 +1,18 @@
 package com.sennohananto.retrofit
 
 import android.app.Application
-import com.sennohananto.retrofit.di.networkModule
-import com.sennohananto.retrofit.di.repositoryModule
-import com.sennohananto.retrofit.di.viewModelModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import com.sennohananto.retrofit.di.CoreComponent
+import com.sennohananto.retrofit.di.DaggerAppComponent
+import com.sennohananto.retrofit.di.DaggerCoreComponent
 
 class MainApp : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidLogger()
-            androidContext(this@MainApp)
-            modules(
-                listOf(
-                    networkModule,
-                    repositoryModule,
-                    viewModelModule
-                )
-            )
-        }
+    private val coreComponent: CoreComponent by lazy {
+        DaggerCoreComponent.factory().create(applicationContext)
     }
+
+    val appComponent by lazy {
+        DaggerAppComponent.factory().create(coreComponent)
+    }
+
 }

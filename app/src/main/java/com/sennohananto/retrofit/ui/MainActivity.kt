@@ -3,22 +3,33 @@ package com.sennohananto.retrofit.ui
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.sennohananto.retrofit.MainApp
 import com.sennohananto.retrofit.data.Status
 import com.sennohananto.retrofit.databinding.ActivityMainBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModel()
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+
+    private val viewModel: MainActivityViewModel by viewModels { factory }
+
     private lateinit var progressDialog: ProgressDialog
     private lateinit var adapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        (application as MainApp).appComponent.inject(this)
 
         progressDialog = ProgressDialog(this)
         adapter = MainAdapter()
