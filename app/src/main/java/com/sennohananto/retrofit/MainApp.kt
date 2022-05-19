@@ -1,28 +1,7 @@
 package com.sennohananto.retrofit
 
 import android.app.Application
-import com.sennohananto.retrofit.di.networkModule
-import com.sennohananto.retrofit.di.repositoryModule
-import com.sennohananto.retrofit.di.viewModelModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
-class MainApp : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin {
-            androidLogger()
-            androidContext(this@MainApp)
-            modules(
-                listOf(
-                    networkModule,
-                    repositoryModule,
-                    viewModelModule
-                )
-            )
-        }
-    }
-}
+@HiltAndroidApp
+class MainApp : Application()

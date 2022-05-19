@@ -1,9 +1,19 @@
 package com.sennohananto.retrofit.di
 
 import com.sennohananto.retrofit.data.Repository
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import com.sennohananto.retrofit.data.service.ApiHelper
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
-val repositoryModule = module {
-    singleOf(::Repository)
+@Module
+@InstallIn(ViewModelComponent::class)
+object RepositoryModule {
+
+    @ViewModelScoped
+    @Provides
+    fun provideRepository(apiHelper: ApiHelper) = Repository(apiHelper)
+
 }

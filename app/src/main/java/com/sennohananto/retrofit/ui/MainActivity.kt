@@ -3,15 +3,17 @@ package com.sennohananto.retrofit.ui
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.sennohananto.retrofit.data.Status
 import com.sennohananto.retrofit.databinding.ActivityMainBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModel()
+    private val viewModel: MainActivityViewModel by viewModels()
     private lateinit var progressDialog: ProgressDialog
     private lateinit var adapter: MainAdapter
 

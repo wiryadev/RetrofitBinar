@@ -11,7 +11,7 @@
         android:id="@+id/btn_get_all_posts"
         android:layout_width="match_parent"
         android:text="@string/get_all_car"
-        android:backgroundTint="@color/purple_616"
+        android:backgroundTint="@color/purple_500"
         android:layout_height="wrap_content" />
 
     <ImageView

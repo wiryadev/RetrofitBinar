@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.sennohananto.retrofit.data.Repository
 import com.sennohananto.retrofit.data.Resource
 import com.sennohananto.retrofit.data.model.GetAllPostsResponseItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivityViewModel(
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
     private val _posts = MutableLiveData<Resource<List<GetAllPostsResponseItem>>>()

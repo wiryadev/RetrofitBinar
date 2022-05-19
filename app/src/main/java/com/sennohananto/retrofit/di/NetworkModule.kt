@@ -1,48 +1,84 @@
 package com.sennohananto.retrofit.di
 
+import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.sennohananto.retrofit.data.service.ApiHelper
 import com.sennohananto.retrofit.data.service.ApiService
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+import javax.inject.Singleton
 
 private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
-val networkModule = module {
-    single {
-        HttpLoggingInterceptor().apply {
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+
+    @Singleton
+    @Provides
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
-    single {
-        ChuckerInterceptor.Builder(androidContext())
-            .collector(ChuckerCollector(androidContext()))
+
+    @Singleton
+    @Provides
+    fun provideChuckerInterceptor(
+        @ApplicationContext context: Context
+    ): ChuckerInterceptor {
+        return ChuckerInterceptor.Builder(context)
+            .collector(ChuckerCollector(context))
             .maxContentLength(250000L)
             .redactHeaders(emptySet())
             .alwaysReadResponseBody(false)
             .build()
     }
-    single {
-        OkHttpClient.Builder()
-            .addInterceptor(get<HttpLoggingInterceptor>())
-            .addInterceptor(get<ChuckerInterceptor>())
+
+    @Singleton
+    @Provides
+    fun provideOkHttp(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        chuckerInterceptor: ChuckerInterceptor,
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(chuckerInterceptor)
             .build()
     }
-    single {
-        Retrofit.Builder()
+
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(
+        okHttpClient: OkHttpClient
+    ): Retrofit {
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(get())
+            .client(okHttpClient)
             .build()
     }
-    single {
-        get<Retrofit>().create(ApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideApiService(retrofit: Retrofit): ApiService {
+        return retrofit.create()
     }
-    singleOf(::ApiHelper)
+
+    @Singleton
+    @Provides
+    fun provideApiHelper(apiService: ApiService): ApiHelper {
+        return ApiHelper(apiService)
+    }
+
 }
