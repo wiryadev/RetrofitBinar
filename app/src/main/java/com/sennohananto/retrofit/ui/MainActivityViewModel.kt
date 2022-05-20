@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.sennohananto.retrofit.data.Repository
 import com.sennohananto.retrofit.data.Resource
 import com.sennohananto.retrofit.data.model.GetAllPostsResponseItem
+import com.sennohananto.retrofit.data.room.PostEntity
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(
@@ -25,5 +26,9 @@ class MainActivityViewModel(
                 _posts.postValue(Resource.error(exception.message ?: "Error Occurred"))
             }
         }
+    }
+
+    fun insert(post: PostEntity) = viewModelScope.launch {
+        repository.bookmarkPost(post)
     }
 }

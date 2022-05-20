@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sennohananto.retrofit.data.model.GetAllPostsResponseItem
 import com.sennohananto.retrofit.databinding.ItemListBinding
 
-class MainAdapter :
-    ListAdapter<GetAllPostsResponseItem, MainAdapter.MainViewHolder>(DIFF_CALLBACK) {
+class MainAdapter(
+    private val onPostClicked: (GetAllPostsResponseItem) -> Unit
+) : ListAdapter<GetAllPostsResponseItem, MainAdapter.MainViewHolder>(DIFF_CALLBACK) {
 
     inner class MainViewHolder(
         private val binding: ItemListBinding
@@ -18,6 +19,9 @@ class MainAdapter :
 
             with(binding) {
                 tvTitle.text = data.title
+                root.setOnClickListener {
+                    onPostClicked.invoke(data)
+                }
             }
         }
     }

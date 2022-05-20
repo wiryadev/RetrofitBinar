@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sennohananto.retrofit.data.Status
+import com.sennohananto.retrofit.data.room.PostEntity
 import com.sennohananto.retrofit.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,7 +22,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         progressDialog = ProgressDialog(this)
-        adapter = MainAdapter()
+        adapter = MainAdapter(
+            onPostClicked = { responseItem ->
+                val newPostEntity = PostEntity(
+                    id = responseItem.id,
+                    body = responseItem.body,
+                    title = responseItem.title,
+                    userId = responseItem.userId,
+                )
+                viewModel.insert(newPostEntity)
+            }
+        )
         binding.rvPost.adapter = adapter
 
         binding.btnGetAllPosts.setOnClickListener {

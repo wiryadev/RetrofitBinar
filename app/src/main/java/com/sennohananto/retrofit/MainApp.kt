@@ -1,6 +1,7 @@
 package com.sennohananto.retrofit
 
 import android.app.Application
+import com.sennohananto.retrofit.di.databaseModule
 import com.sennohananto.retrofit.di.networkModule
 import com.sennohananto.retrofit.di.repositoryModule
 import com.sennohananto.retrofit.di.viewModelModule
@@ -19,8 +20,9 @@ class MainApp : Application() {
             modules(
                 listOf(
                     networkModule,
+                    databaseModule,
                     repositoryModule,
-                    viewModelModule
+                    viewModelModule,
                 )
             )
         }
